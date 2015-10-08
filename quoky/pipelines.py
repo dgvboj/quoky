@@ -16,12 +16,11 @@ Base = declarative_base()
 
 class Detail(Base):
     __tablename__ = 'prices'
-    # isin = Column(String, primary_key=True)
     id = Column(Integer, primary_key=True)
     Boersen_ID = Column(Integer)
-    OBID = Column(String)
+    OBID = Column(String(20))
     erzeugt_am = Column(DateTime)
-    Anbieter_ID = Column(String)
+    Anbieter_ID = Column(String(20))
     Anbieter_ObjektID = Column(String(100))
     Immobilientyp = Column(String(50))
     Immobilientyp_detail = Column(String(200))
@@ -45,7 +44,7 @@ class Detail(Base):
     Monat = Column(Integer)
     url = Column(String(1000))
     Telefon = Column(String(100))
-    Erstellungsdatum = Column(String)
+    Erstellungsdatum = Column(String(50))
     Gewerblich = Column(Integer)
 
 

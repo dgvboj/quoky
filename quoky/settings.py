@@ -16,6 +16,7 @@ NEWSPIDER_MODULE = 'quoky.spiders'
 
 # We use sqlite for starters (easier)
 DB = 'sqlite:///quoka.sqlite'
+DB = 'mysql+pymysql://quoky:mypass@localhost/quoky'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'quoky (+http://www.yourdomain.com)'
