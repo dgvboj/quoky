@@ -6,12 +6,25 @@ import sys
 
 
 # TODO: use a library for this
+# Converts a country prefix to a country name
 COUNTRIES = {
     'D': 'Deutschland',
     'NL': 'Nederlands',
     'A': u'Östereich',
     'PL': 'Pollen',
 }
+
+
+def correct_prices(data, fields):
+    '''5.000.000,- -> 5000000 '''
+    for field in fields:
+        value = data[field]
+        if value:
+            # Not possible to use "translate" here because of str/unicode issues
+            value = value.replace('.', '').replace(',', '').replace('-', '')
+            data[field] = int(value)
+        else:
+            data[field] = None
 
 
 class QuokySpider(scrapy.Spider):
@@ -41,7 +54,7 @@ class QuokySpider(scrapy.Spider):
             pass
 
     def parse_city(self, response):
-        for url in response.xpath('//*[@id="ResultListData"]/ul/li').xpath('//li/div[2]/a/@href').extract():
+        for url in response.xpath('//*[@id="ResultListData"]/ul/li').xpath('.//div[2]/a/@href').extract():
             yield scrapy.Request(response.urljoin(url), self.parse_detail)
 
     def parse_detail(self, response):
@@ -85,7 +98,12 @@ class QuokySpider(scrapy.Spider):
         data['Vermarktungstyp'] = 'kaufen'
         data['Monat'] = mytime.month
         # Fill fields marked as empty in the requirements
-        EMPTY_FIELDS = [ 'Anbieter_ObjektID', 'Immobilientyp_detail', 'Bundesland', 'Bezirk', 'Strasse', 'Hausnummer', 'Etage', 'Kaltmiete', 'Warmmiete', 'Nebenkosten', 'Zimmeranzahl', 'Wohnflaeche' ]
+        EMPTY_FIELDS = [
+            'Anbieter_ObjektID', 'Immobilientyp_detail', 'Bundesland',
+            'Bezirk', 'Strasse', 'Hausnummer', 'Etage', 'Kaltmiete',
+            'Warmmiete', 'Nebenkosten', 'Zimmeranzahl', 'Wohnflaeche'
+        ]
         for field in EMPTY_FIELDS:
             data[field] = None
+        correct_prices(data, ['Kaufpreis', 'Kaltmiete', 'Warmmiete', 'Nebenkosten'])
         yield data
