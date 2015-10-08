@@ -13,4 +13,15 @@ class QuokySpider(scrapy.Spider):
             yield scrapy.Request(response.urljoin(url), self.city_pager)
 
     def city_pager(self, response):
-        pass
+        # TODO: First, get the data in this page
+        # Now get the next page, rinse and repeat
+        #  We use the "next page" link, which is easier to use than the direct page links
+        try:
+            next_url = response.css(
+                ('body > div.spr-wrp > div.cnv > div.cnt > '
+                'main > div.page-navigation-bottom.rslt-pagination-container.style-facelift > '
+                'div > div > div > ul > li.arr-rgt.active > a')).xpath('@href').extract()[0]
+            yield scrapy.Request(response.urljoin(next_url), self.city_pager)
+        except:
+            # We have reached the last url, nothing more to do
+            pass
