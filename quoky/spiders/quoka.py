@@ -45,8 +45,8 @@ class QuokySpider(scrapy.Spider):
             ('country-code',     'div.data > div:nth-child(2) > div.location > strong > span > span > span.country-name.country'),
             ('Stadt',            'div.data > div:nth-child(2) > div.location > strong > span > a > span'),
             ('PLZ',              'div.location > strong > span > span > span.postal-code'),
-            (u'Überschrift',     'div.headline > h2'),
-            (u'Beschreibung',    'div.data > div:nth-child(3) > div'),
+            ('Ueberschrift',     'div.headline > h2'),
+            ('Beschreibung',     'div.data > div:nth-child(3) > div'),
             ('Kaufpreis',        'div.price.has-type > strong > span'),
             ('Telefon',          'div.meta > div.box.bdr-grey.cust-links > div > ul > li > span > span'),
             ('Erstellungsdatum', 'div.data > div:nth-child(2) > div.date-and-clicks > span'),
@@ -64,7 +64,7 @@ class QuokySpider(scrapy.Spider):
         # country-code is not needed, we need Land
         data['Land'] = COUNTRIES[data.pop('country-code')]
         data['Boersen_ID'] = 'xxx'
-        data['Immobilientyp'] = 'Büros, Gewerbeflächen'
+        data['Immobilientyp'] = u'Büros, Gewerbeflächen'
         data['Vermarktungstyp'] = 'kaufen'
         data['Monat'] = mytime.month
         data['Gewerblich'] = gewerblich

@@ -14,16 +14,6 @@ from sqlalchemy import Column, DateTime, String, Integer
 Base = declarative_base()
 
 
-def get_session(db, create=False):
-    '''Get sqlalchemy session, create database if requested'''
-    engine = create_engine(db)
-    if create:
-        Base.metadata.create_all(engine)
-    Session = sessionmaker()
-    Session.configure(bind=engine)
-    return Session()
-
-
 class Detail(Base):
     __tablename__ = 'prices'
     # isin = Column(String, primary_key=True)
@@ -32,6 +22,7 @@ class Detail(Base):
     OBID = Column(String)
     erzeugt_am = Column(DateTime)
     Anbieter_ID = Column(String)
+    Anbieter_ObjektID = Column(String)
     Immobilientyp = Column(String)
     Immobilientyp_detail = Column(String)
     Vermarktungstyp = Column(String)
@@ -58,6 +49,16 @@ class Detail(Base):
     Gewerblich = Column(String)
 
 
+def get_session(db, create=False):
+    '''Get sqlalchemy session, create database if requested'''
+    engine = create_engine(db)
+    if create:
+        Base.metadata.create_all(engine)
+    Session = sessionmaker()
+    Session.configure(bind=engine)
+    return Session()
+
+
 class DatabasePipeline(object):
 
     def __init__(self, db):
@@ -71,7 +72,10 @@ class DatabasePipeline(object):
         self.session = get_session(self.db, True)
 
     def close_spider(self, spider):
-        self.client.close()
+        self.session.commit()
+        self.session.close_all()
 
     def process_item(self, item, spider):
+        detail = Detail(**item)
+        self.session.add(detail)
         return item
