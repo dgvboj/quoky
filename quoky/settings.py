@@ -14,6 +14,8 @@ BOT_NAME = 'quoky'
 SPIDER_MODULES = ['quoky.spiders']
 NEWSPIDER_MODULE = 'quoky.spiders'
 
+# We use sqlite for starters (easier)
+DB = 'sqlite:///quoka.sqlite'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'quoky (+http://www.yourdomain.com)'
@@ -61,9 +63,9 @@ NEWSPIDER_MODULE = 'quoky.spiders'
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'quoky.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'quoky.pipelines.DatabasePipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
