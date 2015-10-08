@@ -1,1 +1,2 @@
 Scrappy==0.3.0a4
+SQLAlchemy==1.0.8

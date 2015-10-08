@@ -8,6 +8,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, DateTime, String, Integer
 
 
 Base = declarative_base()
@@ -21,6 +22,40 @@ def get_session(db, create=False):
     Session = sessionmaker()
     Session.configure(bind=engine)
     return Session()
+
+
+class Detail(Base):
+    __tablename__ = 'prices'
+    # isin = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    Boersen_ID = Column(Integer)
+    OBID = Column(String)
+    erzeugt_am = Column(DateTime)
+    Anbieter_ID = Column(String)
+    Immobilientyp = Column(String)
+    Immobilientyp_detail = Column(String)
+    Vermarktungstyp = Column(String)
+    Land = Column(String)
+    Bundesland = Column(String)
+    Bezirk = Column(String)
+    Stadt = Column(String)
+    PLZ = Column(String)
+    Strasse = Column(String)
+    Hausnummer = Column(String)
+    Ueberschrift = Column(String)
+    Beschreibung = Column(String)
+    Etage = Column(Integer)
+    Kaufpreis = Column(Integer)
+    Kaltmiete = Column(Integer)
+    Warmmiete = Column(Integer)
+    Nebenkosten = Column(Integer)
+    Zimmeranzahl = Column(Integer)
+    Wohnflaeche = Column(Integer)
+    Monat = Column(Integer)
+    url = Column(String)
+    Telefon = Column(String)
+    Erstellungsdatum = Column(String)
+    Gewerblich = Column(String)
 
 
 class DatabasePipeline(object):
